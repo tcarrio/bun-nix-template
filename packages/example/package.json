@@ -1,0 +1,13 @@
+{
+  "name": "@org/example",
+  "version": "1.0.0",
+  "description": "Example package in @org",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@org/repository",
+  "version": "1.0.0",
+  "description": "Monorepository for the node-nix-template",
+  "main": "index.js",
+  "repository": "https://github.com/tcarrio/node-nix-template",
+  "author": "",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "ts-node": "^10.9.2"
+  }
+}
