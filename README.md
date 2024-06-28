@@ -31,6 +31,10 @@ The declarative and functional package manager and language: Nix. This is a mini
 
 A useful development tool for augmenting your shell for projects, allowing you to load environment variables and tools transparently by simply changing into a project directory. This, along with the builtin support for Nix with `use flake`, allows anyone with `direnv` and `nix` to immediately enter a shell with the exact versions of tools for the project.
 
+### VS Code
+
+This template provides recommendations and settings for the [Nix Env Selector extension](https://marketplace.visualstudio.com/items?itemName=arrterian.nix-env-selector) which utilizes the `shell.nix` file to provide an identical environment for the VS Code editor as the `direnv` shell would. This parity ensures you aren't references different versions of binaries due to variance in your `code` process's `$PATH` and the shell's. 
+
 ### OpenTofu
 
 A free and open source fork of Terraform. This is used for defining and maintaining infrastructure as code.
