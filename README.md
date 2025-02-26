@@ -9,6 +9,8 @@ This project provides a starting point for a Bun project supported by Nix and di
 - [Nix]
 - [Direnv]
 - [OpenTofu]
+- [SOPS]
+- [Taskfile]
 
 ### Bun
 
