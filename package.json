@@ -1,17 +1,20 @@
 {
-  "name": "@org/repository",
+  "name": "@org/monorepo",
   "version": "1.0.0",
-  "description": "Monorepository for the node-nix-template",
-  "main": "index.js",
-  "repository": "https://github.com/tcarrio/node-nix-template",
-  "author": "",
+  "description": "Monorepository for the bun-nix-template",
+  "repository": "https://github.com/tcarrio/bun-nix-template",
+  "author": "Tom Carrio <tom@carrio.dev>",
   "license": "MIT",
   "private": true,
   "workspaces": [
     "packages/*"
   ],
+  "module": "index.ts",
+  "type": "module",
   "devDependencies": {
-    "@types/node": "^20.12.12",
-    "ts-node": "^10.9.2"
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
   }
 }
