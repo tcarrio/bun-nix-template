@@ -1,35 +1,27 @@
 # infrastructure
 
-Defines various resources that are hosted on cloud providers via **[OpenTofu]**.
+Manage various infrastructure-as-code definitions with OpenTofu.
 
-## Laundry list
+## Overview
 
-Don't use vanilla Terraform/OpenTofu.
+There are several top-level directories available out of the box:
 
-You can quickly reach the limits of Terraform if you aren't implementing a Terraform provider explicitly for various functionality. How I am using the module system for parameterized Nix builds and Wrangler interactions has begun to reach these. 
+- `backends/`
+- `cf-example/`
+- `deploy/`
 
-Alternatives?
+### backends
 
-- **Use Terragrunt**. [Terragrunt] builds upon Terraform and provides more enhanced capabilities, explicit modules and dependency definitions, and enhanced cross-module interoperability.
-- **Use Terranix**. [Terranix] processes Nix expressions and generates [Terraform JSON] configuration files, which can then be applied by a *Terraform-compatible* CLI like **OpenTofu**.
+Contains backend configurations you can use for an OpenTofu [backend](https://opentofu.org/docs/language/settings/backends/configuration/), which defines where OpenTofu stores its state data files.
 
-### Terragrunt
+This currently contains only a Cloudflare R2 backend configuration. More may be added, this is just what I have used.
 
-Terragrunt builds on useful concepts such as [directed-acyclic graphics (DAGs)][DAG] for deploying a stack of units. It also provides enhancements over Terraform that allow you to compose configurations and environments more easily, with documentation for [DRY backend](https://terragrunt.gruntwork.io/docs/getting-started/quick-start/#keep-your-backend-configuration-dry) and [provider configurations](https://terragrunt.gruntwork.io/docs/getting-started/quick-start/#keep-your-provider-configuration-dry). These would already provide some convenience for workarounds like the current `backends/cloudflare-r2.conf` file that is used in tandem with `tofu init`. Terragrunt also supports an **[auto-init](https://terragrunt.gruntwork.io/docs/features/auto-init/)** capability that removes this step!
+### cf-example
 
-The company backing Terragrunt is Gruntwork, and their primary offering is reusable Terragrunt modules primarily around AWS. I don't care for AWS much for personal projects, so I'm at a bit of an impasse of actually utilizing any of those.
+The sample stack included in the template. This uses Cloudflare for the backend state and configures both Cloudflare and AWS providers- the latter actually allowing you to reuse `aws` S3 provider resources, but having them backed by Cloudflare R2.
 
+### deploy
 
-### Terranix
+An empty directory, but this is where you would store SOPS-encrypted environment files to configure secret values. This is used in tandem with `sops exec-env` to decrypt a file, parse the keys as environment variables, and execute a script with that environment context. This is a solid way to securely execute with secrets entirely in-memory.
 
-This invests deeper in the Nix ecosystem, quite literally defining Terraform resources with Nix expressions instead of HCL. This is less natively operating inside Terraform and instead extracting certain capabilities into a declarative *and functional* language that can otherwise define the same constructs. Where you might have hit a limit with Terraform's native capabilities (e.g. meta-properties like `depends_on` not being compatible with Terraform `module`s), you could move an entire project definition into Nix definition, utilize the Nix module system where it fits, or functions where it may not. In the end, it's a JSON config that's similarly supported for Terraform `apply` commands.
-
-There are no concepts of DAGs and ultimately the OpenTofu instance is utilized for applying the Terraform JSON configuration. The current areas of friction with Terraform will ultimately be overcome by shifting more logic into Nix. Where one current issue is `depends_on` with Terraform modules, you would instead bypass Terraform modules entirely and instead use Nix modules or functions. The final result being a single JSON file means all references will actually be static, so `depends_on` passed to underlying `resource` definitions will work.
-
-<!-- References -->
-
-[Terranix]: https://terranix.org/index.html
-[OpenTofu]: https://opentofu.org/
-[Terraform JSON]: https://developer.hashicorp.com/terraform/language/syntax/json
-[Terragrunt]: https://terragrunt.gruntwork.io/
-[DAG]: https://en.wikipedia.org/wiki/Directed_acyclic_graph
+You will need to configure SOPS entirely on your own though. You can integrate with Vault, Google Cloud, AWS, PGP, and age, to name what just I'm aware of.
